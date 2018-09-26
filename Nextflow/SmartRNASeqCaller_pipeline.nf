@@ -18,7 +18,7 @@
 
 / my inputs - outputs/
 python = "/home/mbosio/anaconda2/bin/python"
-/* python =  "/opt/conda/bin/python2.7"  */
+python =  "/opt/conda/bin/python2.7" 
 
 OUTPREFIX = params.OUTPREFIX
 log.info """
@@ -153,6 +153,7 @@ process variant_post_process{
 				file bed_rnaedit from rnaedit_bed_ch
    
   output:
+    file("postprocess_filtered_file.vcf.gz") into filtered_vcf_gz
     file("postprocessed.csv") into pp_csv_out
     
    
@@ -188,7 +189,7 @@ process classify_variants{
   publishDir params.outdir, mode:'copy'
   
   input:
-				file vcf_file_classify from normalized_annotated_vcf_3
+				file vcf_file_classify from filtered_vcf_gz
 				file csv_file_pp  from pp_csv_out
 				file model_ch_file from model_ch
   output:

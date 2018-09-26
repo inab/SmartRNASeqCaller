@@ -161,7 +161,7 @@ def add_filter_field(infile,outfile,ID_info,context_file):
             val = ff[4]
             context_dict[key] = val
 
-    #this is a variant with keys like 'Splice'  = [all variant with Splice annotation]
+        
     with  open(infile) if infile.endswith('vcf') else gzip.open(infile) as rd, open(outfile,'w') as wr:
         for line in rd:
             if "1/2" in line :

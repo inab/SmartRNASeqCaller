@@ -2,7 +2,7 @@
 
 import sys
 import argparse
-
+import gzip
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--vcf_in",'-v', dest='v',type=str,help="VCF file to split")
@@ -18,8 +18,8 @@ with open(args.c) as rd:
         ff= line.strip().split(',')
         var_dict[ff[0]] = ff[1]
         
-        
-with open(args.v ,'r') as rd, open(args.o + '_ok.vcf', 'w') as ok_file, open(args.o + '_ko.vcf','w') as ko_file:
+infile = args.v        
+with  open(infile) if infile.endswith('vcf') else gzip.open(infile)  as rd, open(args.o + '_ok.vcf', 'w') as ok_file, open(args.o + '_ko.vcf','w') as ko_file:
     for line in rd:
         ff = line.strip().split('\t')
         if line.startswith('#'):
