@@ -18,7 +18,7 @@
 
 / my inputs - outputs/
 python = "/home/mbosio/anaconda2/bin/python"
-
+/* python =  "/opt/conda/bin/python2.7"  */
 
 OUTPREFIX = params.OUTPREFIX
 log.info """
@@ -58,6 +58,7 @@ ref_file_ch  = Channel.fromPath(params.ref)
 ref_file_ch.into { ref_file; ref_file_2;ref_file_3 }
 
 ref_fai_ch  = Channel.fromPath(params.ref_fai)
+ref_fai_ch.into {ref_fai_1; ref_fai_2 ; ref_fai_3}
 
 ref_dict_ch  = Channel.fromPath(params.ref_dict)
 
@@ -102,7 +103,7 @@ process GATK_annotate {
 				
     input:
     file fasta_ref from ref_file_2
-    file fai_ref from ref_fai_ch
+    file fai_ref from ref_fai_1
     file dict_ref from ref_dict_ch
     file vcf_in from normalized_vcf
 				file bam_in_annotate from bam_file
@@ -145,6 +146,7 @@ process variant_post_process{
 				file bai_in_annotate from bai_file
 				file vcf_file_pp from normalized_annotated_vcf_2
 				file ref_pp from ref_file_3
+				file fai_pp from ref_fai_2
 				
 				file bed_repmask from repmask_bed_ch
 				file bed_intron from intron_bed_ch
@@ -159,7 +161,7 @@ process variant_post_process{
     echo "post analysis Step 1"
     # require samtools, bcftools, python with pysam etc, look at Readme
 
-    export PATH=$PATH:$postprocess_path
+    #export PATH=$PATH:$postprocess_path
     
     
     $python  $postprocess_path/RNA_post_analysis.py \

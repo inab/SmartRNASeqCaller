@@ -269,8 +269,10 @@ def main (args):
     awk  '{print $1 ":" $2 ":" $3 ":" $4}' %s > %s/RepMask_idx.txt
     awk  '{print $1 ":" $2 ":" $3 ":" $4}' %s > %s/Splice_idx.txt
     awk  '{print $1 ":" $2 ":" $3 ":" $4}' %s > %s/Homopolymer_idx.txt
-    awk  '{print $1 ":" $2 ":" $3 ":" $4}' %s | grep -e ":A:G$" -e ":T:C$" > %s/RNAEdit_idx.txt 
-    touch all_IDs ; for i in *_idx.txt ; do echo $i > a.txt ; awk -F '\\t' '{print $1}' $i | sort |uniq|grep -v ID  >> a.txt; paste  a.txt  all_IDs| column -s $';' -t > b.txt; rm a.txt ; mv b.txt all_IDs ; echo $i ; done
+    awk  '{print $1 ":" $2 ":" $3 ":" $4}' %s | grep -e ":A:G$" -e ":T:C$" > %s/RNAEdit_idx.txt
+    for i in *_idx.txt; do echo $i > tmp.txt ; cat $i >> tmp.txt; mv tmp.txt $i ;done
+    paste *_idx.txt > all_IDs    
+    #touch all_IDs ; for i in *_idx.txt ; do echo $i > a.txt ; awk -F '\\t' '{print $1}' $i | sort |uniq|grep -v ID  >> a.txt; paste  a.txt  all_IDs| column -s $';' -t > b.txt; rm a.txt ; mv b.txt all_IDs ; echo $i ; done
     sed -i 's/_idx.txt//g' all_IDs
     sed -i "s/\\t%sAll_var/\\tAll_var/g" all_IDs
     sed  -i 's/\t$//' all_IDs
