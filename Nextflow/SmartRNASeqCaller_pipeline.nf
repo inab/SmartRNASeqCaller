@@ -17,8 +17,7 @@
 
 
 / my inputs - outputs/
-python = "/home/mbosio/anaconda2/bin/python"
-python =  "/opt/conda/bin/python2.7" 
+python = params.python
 
 OUTPREFIX = params.OUTPREFIX
 log.info """
@@ -122,6 +121,9 @@ process GATK_annotate {
        -V $vcf_in  \
        -o normalized.annotated.vcf \
        -A Coverage \
+       -A LikelihoodRankSumTest \
+       -A ReadPosRankSumTest \
+       -A BaseQualityRankSumTest \
        -L $vcf_in \
     """  
 }  
