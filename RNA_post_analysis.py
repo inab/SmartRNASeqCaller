@@ -167,7 +167,9 @@ def add_filter_field(infile,outfile,ID_info,context_file):
             if "1/2" in line :
                 print line
                 print infile
-
+                print 'ERROR ###########################'
+                print 'The VCF file input of this tool should only be composed of biallelic sites'
+                print '#################################'
                 raise
             if line.startswith('##'): wr.write(line)
             elif line.startswith('#'):
@@ -218,7 +220,7 @@ def main (args):
     print '###############################################################'
     print '# Step 1 : support from first 6 bp of reads'
     print '###############################################################'
-    print 'skip step 1'
+
     with open(args.outfile +'_step1.csv','w') as wr:
        wr.write('skipped step')
     step1_start_end_read(samfile,sites,args.outfile +'_step1.csv')
