@@ -195,8 +195,8 @@ process classify_variants{
 				file csv_file_pp  from pp_csv_out
 				file model_ch_file from model_ch
   output:
-    file("vcf_ok.vcf") into vcf_ok
-    file("vcf_ko.vcf") into vcf_ko
+    file(params.OUTPREFIX + "_ok.vcf") into vcf_ok
+    file(params.OUTPREFIX + "_ko.vcf") into vcf_ko
     
    
   script:
@@ -208,14 +208,13 @@ process classify_variants{
     $python $postprocess_path/split_vcf.py \
         -c classified.tmp.csv \
         -v $vcf_file_classify \
-        -o vcf
+        -o ${OUTPREFIX}
   """
    
-
-}
- 
+} 
 
  
 workflow.onComplete { 
 	println ( workflow.success ? "\nDone! Open the following report\n" : "Oops .. something went wrong" )
+
 } 
