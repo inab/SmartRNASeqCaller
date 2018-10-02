@@ -202,7 +202,7 @@ process classify_variants{
   script:
   """ 
     echo "post analysis Step 2"
-    Rscript $postprocess_path/predict_variants.R $model_ch_file $csv_file_pp classified.tmp.csv
+    Rscript $postprocess_path/predict_variants.R --model $model_ch_file --input $csv_file_pp --out classified.tmp.csv
     
     echo "Now I have to filter VCF for ok and filtered samples"
     $python $postprocess_path/split_vcf.py \

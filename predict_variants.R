@@ -1,16 +1,28 @@
 ## Funcitons to be used 
-#Evaluation NA 12878
 library(caret)
-# library(randomForest)
-# library(ggplot2)
-# library(pROC)
-# library(parallel)
-# library(doParallel)
-# library(plyr)
-# library(psych)
-# library(RColorBrewer)
-# library(PRROC)
 library(ranger)
+library(optparse)
+
+
+option_list = list(
+  make_option(c("-i", "--input"), type="character", default=NULL, 
+              help="input file name", metavar="character"),
+  make_option(c("-m", "--model"), type="character", default=NULL, 
+              help="model file to classify", metavar="character"),
+	make_option(c("-o", "--out"), type="character", default="classified.tmp.csv", 
+              help="output file name [default= %default]", metavar="character"),
+  make_option(c("-a", "--aligner"), type="character", default="star", 
+              help="Aligner type, [default= %default]. If set to bwa will adapt the selection threshold", metavar="character")
+); 
+
+opt_parser = OptionParser(option_list=option_list);
+opt = parse_args(opt_parser);
+
+if (is.null(opt$input) || is.null(opt$model)){
+  print_help(opt_parser)
+  stop("both model and input file need to be specified.\n", call.=FALSE)
+}
+
 
 prepare_data = function(fname) {
   indata <- read.delim(fname, header=T, stringsAsFactors = T)
@@ -37,18 +49,30 @@ prepare_data = function(fname) {
 
 
 
-classify_me = function(model,testset){
+classify_me = function(model,testset,threshold){
   model= readRDS(model)
   testset = prepare_data(testset)
-  testset$germline = predict(model,testset)
+  tmp_pred=predict(model,testset,type = 'prob')
+  tmp_pred=tmp_pred$yes >= threshold
+
+  testset$germline = as.numeric(tmp_pred)
+
   return(testset[,c('ID','germline')])
 }
 
 #LOAD MODEL
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly=TRUE)
-model=args[1]
-tdata=args[2]
-outname=args[3]
-tt = classify_me(model,tdata)
+#args = commandArgs(trailingOnly=TRUE)
+
+opt_parser = OptionParser(option_list=option_list);
+args = parse_args(opt_parser);
+model=args$model
+tdata=args$input
+outname=args$out
+threshold = 0.5 #default model threhsold
+if (args$aligner == 'bwa'){
+  threshold = 0.2
+  }
+
+tt = classify_me(model,tdata,threshold)
 write.csv(tt,file=outname,quote=F, sep="\t",row.names = F)

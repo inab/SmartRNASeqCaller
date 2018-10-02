@@ -28,9 +28,9 @@ with  open(infile) if infile.endswith('vcf') else gzip.open(infile)  as rd, open
         else:
             ID=':'.join([ff[0],ff[1],ff[3],ff[4]])
             verdict= var_dict.get(ID,'NA') 
-            if verdict =='yes':
+            if verdict =='1':
                 ok_file.write(line)
-            elif verdict =='no':
+            elif verdict =='0':
                 ko_file.write(line)
             else:
                 print 'this %s variant has no classification'%ID
