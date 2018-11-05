@@ -12,7 +12,7 @@ ref_dict: "/data/resources/fasta/hg19/h37d5/hsapiens.hs37d5.dict"
 repmask_bed: "/data/projects/RDconnect/analysis/VCF_post_analysis/repmasker_hg19.bed.gz"
 intron_bed: "/data/projects/RDconnect/analysis/VCF_post_analysis/intron_4bp_splice_overla.bed.gz"
 rnaedit_bed: "/data/projects/RDconnect/analysis/VCF_post_analysis/merged_RNA_edit.bed.gz"
-model: "/data/projects/RDconnect/results/VCF_post_analysis/2018_07_03_results/2018_08_03_model_11_features.rds"
+model: "../resources/RNA_Variant_RF_model.rds"
 
 ## paths to tools
 GATK: "/home/mbosio/software/GATK/GATK_3.6.0/GenomeAnalysisTK.jar"
