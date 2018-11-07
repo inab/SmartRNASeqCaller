@@ -3,10 +3,10 @@ set -e
 ##  Required resources
 ############################################################
 REF='myfasta.fa'  #needs to have .fai and .dict files too
-REPMASK='repmask.bed'
-SPLICE4BP='splice.bed'
-RNAEDIT='rnaedit.bed'
-MODEL='model.rds'
+REPMASK='resources/hg19/repmasker_hg19.bed.gz'
+SPLICE4BP='resources/hg19/intron_4bp_splice_overlap.bed.gz'
+RNAEDIT='resources/hg19/merged_RNA_edit.bed.gz'
+MODEL='resources/RNA_Variant_RF_model.rds'
 CODEFOLDER='PATH to SmartRNASeqCaller'
 GATK='path to GATK/GenomeAnalysisTK.jar'
 
