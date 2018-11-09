@@ -6,20 +6,17 @@ outdir : "results"
 OUTPREFIX: "postprocess"
 
 ## Overall reference resources
-ref: "/data/resources/fasta/hg19/h37d5/hsapiens.hs37d5.fasta"
-ref_fai: "/data/resources/fasta/hg19/h37d5/hsapiens.hs37d5.fasta.fai"
-ref_dict: "/data/resources/fasta/hg19/h37d5/hsapiens.hs37d5.dict"
-repmask_bed: "/home/mbosio/projects/SmartRNASeqCaller/resources/repmasker_hg19.bed.gz"
-intron_bed: "/home/mbosio/projects/SmartRNASeqCaller/resources/intron_4bp_splice_overla.bed.gz"
-rnaedit_bed: "/home/mbosio/projects/SmartRNASeqCaller/resources/merged_RNA_edit.bed.gz"
-model: "/home/mbosio/projects/SmartRNASeqCaller/resources/RNA_Variant_RF_model.rds"
+ref: "hsapiens.hs37d5.fasta"
+ref_fai: "hsapiens.hs37d5.fasta.fai"
+ref_dict: "hsapiens.hs37d5.dict"
+repmask_bed: "SmartRNASeqCaller/resources/repmasker_hg19.bed.gz"
+intron_bed: "SmartRNASeqCaller/resources/intron_4bp_splice_overla.bed.gz"
+rnaedit_bed: "SmartRNASeqCaller/resources/merged_RNA_edit.bed.gz"
+model: "SmartRNASeqCaller/resources/RNA_Variant_RF_model.rds"
 
 ## paths to tools
-#GATK: "/home/mbosio/software/GATK/GATK_3.6.0/GenomeAnalysisTK.jar"
 GATK: "/usr/GenomeAnalysisTK.jar"
-#python: "/home/mbosio/anaconda2/bin/python"
 python:  "/opt/conda/bin/python2.7" 
-# Path to SmartRNASeqCaller
-#pp_path: "/home/mbosio/projects/SmartRNASeqCaller/"
-pp_path: "/home/mbosio/projects/SmartRNASeqCaller/"
+#Full Path to SmartRNASeqCaller locally
+pp_path: "/..../SmartRNASeqCaller"
 
