@@ -26,13 +26,13 @@ if (is.null(opt$input) || is.null(opt$model)){
 
 prepare_data = function(fname) {
   indata <- read.delim(fname, header=T, stringsAsFactors = T)
-  input_vect = Filter(function(x)!all(is.na(x)), indata)
+  input_vect = indata #Filter(function(x)!all(is.na(x)), indata)
   input_vect= input_vect[input_vect$Genotype!= '1/2',]
   # input_vect$MLEAC = as.numeric(levels(input_vect$MLEAC))[input_vect$MLEAC]
   # input_vect$MLEAF = as.numeric(levels(input_vect$MLEAF))[input_vect$MLEAF]
   na_count <-sapply(input_vect, function(y) sum(length(which(is.na(y)))))
   fix_columns = c('BaseQRankSum','ClippingRankSum','LikelihoodRankSum',
-                  'MQRankSum','ReadPosRankSum')
+                  'MQRankSum','ReadPosRankSum','DP')
   #set these missing to '0'
   idx <- match(fix_columns, names(input_vect))
   idx <- sort(c(idx-1, idx))

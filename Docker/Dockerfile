@@ -38,6 +38,7 @@ RUN mkdir -p /opt/SmartRNASeqCaller/
 #COPY SmartRNASeqCaller/ /opt/SmartRNASeqCaller/
 RUN Rscript -e 'install.packages("optparse", repos="http://cran.us.r-project.org")'
 RUN cd /opt; git clone https://github.com/inab/SmartRNASeqCaller.git
+RUN rm -rf /opt/SmartRNASeqCaller/*
 RUN cd /opt/SmartRNASeqCaller/resources ; wget https://sandbox.zenodo.org/record/249252/files/RNA_Variant_RF_model.rds
 
 
