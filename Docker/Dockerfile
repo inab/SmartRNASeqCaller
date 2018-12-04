@@ -34,10 +34,13 @@ RUN Rscript -e 'install.packages("e1071", repos="http://cran.us.r-project.org")'
 
 USER root
 RUN mkdir -p /opt/SmartRNASeqCaller/
-RUN cd /opt; git clone https://github.com/inab/SmartRNASeqCaller.git 
+
 #COPY SmartRNASeqCaller/ /opt/SmartRNASeqCaller/
-RUN cd /opt/SmartRNASeqCaller/resources ; wget https://sandbox.zenodo.org/record/249252/files/RNA_Variant_RF_model.rds
 RUN Rscript -e 'install.packages("optparse", repos="http://cran.us.r-project.org")'
+RUN cd /opt; git clone https://github.com/inab/SmartRNASeqCaller.git
+RUN cd /opt/SmartRNASeqCaller/resources ; wget https://sandbox.zenodo.org/record/249252/files/RNA_Variant_RF_model.rds
+
+
 
 USER biodocker
  
