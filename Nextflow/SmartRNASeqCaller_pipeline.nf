@@ -124,6 +124,7 @@ process GATK_annotate {
        -A LikelihoodRankSumTest \
        -A ReadPosRankSumTest \
        -A BaseQualityRankSumTest \
+       -A DepthPerAlleleBySample \
        -L $vcf_in \
     """  
 }  

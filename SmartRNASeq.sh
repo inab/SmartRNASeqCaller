@@ -66,6 +66,7 @@ java -jar $GATK \
        -A LikelihoodRankSumTest \
        -A ReadPosRankSumTest \
        -A BaseQualityRankSumTest \
+       -A DepthPerAlleleBySample \
        -L $RESFOLDER/$OUTPREFIX"_normalized.vcf" > $RESFOLDER/"Annotation.log" 2>&1
 
 echo '-----------------------------------------------------'

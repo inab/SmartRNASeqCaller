@@ -24,17 +24,46 @@ def parse_info_field(info_field, columns):
     out_list = [out_dict[k] for k in columns]
     return out_list
 
-def parse_gt_field(gt_field):
+def parse_gt_field(gt_field,format_field):
     out_list =[]
+    
     if gt_field.startswith('0/0') or gt_field.startswith('./.'):
         #it's not a variant!
         return 'skip'
     else:
         ff = gt_field.split(':')
+        #print format_field
+        try:
+          AD_idx = format_field.split(':').index('AD')
+          AD= [float(x) for x in ff[AD_idx].split(',')]
+        except:
+            try:
+            #case of platypus NR:NV 
+            #ratio is NV/NR
+              NV   =(ff[format_field.split(':').index('NV')])
+              NR   =(ff[format_field.split(':').index('NR')])
+              NV = float(NV.split(',')[0])
+              NR = float(NR.split(',')[0])
+              AD = [NR-NV,NV]
+            except : 
+              AD=[0,0]
+#              print NV
+#              print NR
+#              print format_field
+#              print gt_field
+
+              #raise
+
         out_list.append(ff[0])
-        AD= [float(x) for x in ff[1].split(',')]
+       
         if sum(AD) <= 0 : return 'skip' #no coverage at all
-        ratio = str(AD[1] / (AD[1] + AD[0]))
+        try :
+            ratio = str(AD[1] / (AD[1] + AD[0]))
+        except:
+            print AD
+            print gt_field
+            raise
+            ratio = '0.0'
         out_list.append(ratio)
     return out_list
 
@@ -112,7 +141,7 @@ def main(args):
                 ######################################################3
                 # GT parsing:
                 ######################################################3
-                out_list = parse_gt_field(ff[9])
+                out_list = parse_gt_field(ff[9],ff[8])
                 if out_list =='skip':
                     print 'Skipping %s because gt problems'%(ID_)
                     print ff[9]
