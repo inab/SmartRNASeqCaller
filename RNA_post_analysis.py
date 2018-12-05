@@ -279,7 +279,7 @@ def main (args):
     sed -i "s/\\t%sAll_var/\\tAll_var/g" all_IDs
     sed  -i 's/\t$//' all_IDs
     mv all_IDs %s
-    Rscript %s/Rplot.R %s %s
+    #Rscript %s/Rplot.R %s %s
     rm *_idx.txt
     
     """%(realpath,
