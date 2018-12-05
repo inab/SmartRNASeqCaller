@@ -156,7 +156,7 @@ process variant_post_process{
 				file bed_rnaedit from rnaedit_bed_ch
    
   output:
-    file("postprocess_filtered_file.vcf.gz") into filtered_vcf_gz
+    file(params.OUTPREFIX +"_filtered_file.vcf.gz") into filtered_vcf_gz
     file("postprocessed.csv") into pp_csv_out
     
    
@@ -217,5 +217,14 @@ process classify_variants{
  
 workflow.onComplete { 
 	println ( workflow.success ? "\nDone! Open the following report\n" : "Oops .. something went wrong" )
+        println ( """Pipeline execution summary
+    ---------------------------
+    Completed at: ${workflow.complete}
+    Duration    : ${workflow.duration}
+    Success     : ${workflow.success}
+    workDir     : ${workflow.workDir}
+    exit status : ${workflow.exitStatus}
+    Error report: ${workflow.errorReport ?: '-'}
+    """)
 
 } 
