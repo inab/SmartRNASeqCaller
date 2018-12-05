@@ -135,7 +135,7 @@ def add_filter_field(infile,outfile,ID_info,context_file):
     # then scan infile and alter filter
     var_dict = dict()
     
-    df = pd.read_csv(ID_info,sep='\t', low_memory=False))
+    df = pd.read_csv(ID_info,sep='\t', low_memory=False)
     #columns : ['Splice','RNAEdit, RepMask,]
     colnames = list(df.columns)
     print colnames
