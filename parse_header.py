@@ -21,7 +21,8 @@ with open(sys.argv[1]) as rd:
 for k,v in fields_dict.items():
     outstr = outstr + ' -A %s'%(v)
 
-print outstr
+sys.stdout.write(outstr)
+
 
 
 

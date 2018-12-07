@@ -135,8 +135,8 @@ process GATK_annotate {
        -T VariantAnnotator \
        -I $bam_in_annotate \
        -V $vcf_in  \
-       -o normalized.annotated.vcf $annotations \
-       -L $vcf_in 
+       -o normalized.annotated.vcf -L $vcf_in $annotations \
+        
 
        #  cp $vcf_in normalized.annotated.vcf
     """  

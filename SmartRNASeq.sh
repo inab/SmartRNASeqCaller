@@ -63,8 +63,9 @@ java -jar $GATK \
        -T VariantAnnotator \
        -I $BAM \
        -V $RESFOLDER/$OUTPREFIX"_normalized.vcf"  \
-       -o $RESFOLDER/$OUTPREFIX"_normalized.annotated.vcf" $ANNOTATIONS \
-       -L $RESFOLDER/$OUTPREFIX"_normalized.vcf" > $RESFOLDER/"Annotation.log" 2>&1
+       -o $RESFOLDER/$OUTPREFIX"_normalized.annotated.vcf"  \
+       -L $RESFOLDER/$OUTPREFIX"_normalized.vcf" $ANNOTATIONS \
+         > $RESFOLDER/"Annotation.log" 2>&1
 
 echo '-----------------------------------------------------'
 echo 'Post process analysis'
