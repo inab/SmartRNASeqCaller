@@ -56,17 +56,14 @@ echo 'Adding GATK annotation fields'
 echo '-----------------------------------------------------'
 echo ' -- Check log :'$RESFOLDER/"Annotation.log" 2>&1
 
+ANNOTATIONS=$(/home/mbosio/anaconda2/bin/python parse_header.py $RESFOLDER/$OUTPREFIX"_normalized.vcf")
+
 java -jar $GATK \
        -R $REF \
        -T VariantAnnotator \
        -I $BAM \
        -V $RESFOLDER/$OUTPREFIX"_normalized.vcf"  \
-       -o $RESFOLDER/$OUTPREFIX"_normalized.annotated.vcf" \
-       -A Coverage \
-       -A LikelihoodRankSumTest \
-       -A ReadPosRankSumTest \
-       -A BaseQualityRankSumTest \
-       -A DepthPerAlleleBySample \
+       -o $RESFOLDER/$OUTPREFIX"_normalized.annotated.vcf" $ANNOTATIONS \
        -L $RESFOLDER/$OUTPREFIX"_normalized.vcf" > $RESFOLDER/"Annotation.log" 2>&1
 
 echo '-----------------------------------------------------'

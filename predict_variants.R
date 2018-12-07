@@ -35,7 +35,8 @@ prepare_data = function(fname) {
                   'MQRankSum','ReadPosRankSum','DP')
   #set these missing to '0'
   idx <- match(fix_columns, names(input_vect))
-  idx <- sort(c(idx-1, idx))
+  idx = sort(idx)
+  #idx <- sort(c(idx-1, idx))
   
   #remove missing context 
   input_vect = input_vect[!is.na(input_vect$Context),]

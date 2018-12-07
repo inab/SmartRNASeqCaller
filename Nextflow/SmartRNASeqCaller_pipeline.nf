@@ -84,7 +84,7 @@ process normalize {
     file fasta_ref from ref_file
      
     output:
-    file("normalized.vcf") into normalized_vcf
+    file("normalized.vcf") into (normalized_vcf,normalized_vcf_2)
  
     script:
     """
@@ -94,7 +94,21 @@ process normalize {
     """ 
 }
 
-
+process GATK_get_annotations {
+  tag "Define annotations"
+ 
+  input:
+  file vcf_in from normalized_vcf_2
+  
+  output:
+   stdout into annot_str
+ 
+  script:
+  """
+    $python $postprocess_path/parse_header.py $vcf_in 
+  """
+ 
+}
 
 
 process GATK_annotate {
@@ -105,27 +119,26 @@ process GATK_annotate {
     file fai_ref from ref_fai_1
     file dict_ref from ref_dict_ch
     file vcf_in from normalized_vcf
-				file bam_in_annotate from bam_file
-				file bai_in_annotate from bai_file
+    file bam_in_annotate from bam_file
+    file bai_in_annotate from bai_file
+    val annotations from annot_str
 				
     output:
     file( "normalized.annotated.vcf") into normalized_annotated_vcf
-
-
+    
     script:
     """
-				 java -jar $params.GATK \
+         
+   
+       java -jar $params.GATK \
        -R $fasta_ref \
        -T VariantAnnotator \
        -I $bam_in_annotate \
        -V $vcf_in  \
-       -o normalized.annotated.vcf \
-       -A Coverage \
-       -A LikelihoodRankSumTest \
-       -A ReadPosRankSumTest \
-       -A BaseQualityRankSumTest \
-       -A DepthPerAlleleBySample \
-       -L $vcf_in \
+       -o normalized.annotated.vcf $annotations \
+       -L $vcf_in 
+
+       #  cp $vcf_in normalized.annotated.vcf
     """  
 }  
   
