@@ -75,24 +75,50 @@ model_ch  = Channel.fromPath(params.model)
 *  Step 5 :  Add RF model estimation : [to do]
 *  Step 6 : Use the R estimations to filter VCF
 */
- 
-process normalize {
-    tag "Normalization"
+
+if (params.vcf.endsWith("vcf.gz")){ 
+    process normalize {
+       tag "Normalization"
      
-    input:
-    file vcf_in from vcf_file
-    file fasta_ref from ref_file
+       input:
+       file vcf_in from vcf_file
+       file fasta_ref from ref_file
      
-    output:
-    file("normalized.vcf") into (normalized_vcf,normalized_vcf_2)
+       output:
+       file("normalized.vcf") into (normalized_vcf,normalized_vcf_2)
  
-    script:
-    """
-    bgzip $vcf_in
-    tabix $vcf_in".gz"
-    bcftools norm  -m - --threads $task.cpus --fasta $fasta_ref -o normalized.vcf  $vcf_in".gz"
-    """ 
+       script:
+        """
+        #bgzip $vcf_in
+        #tabix $vcf_in".gz"
+        bcftools norm  -m - --threads $task.cpus --fasta $fasta_ref -o normalized.vcf  $vcf_in
+        """ 
+    }
+
+}else{
+
+  process normalize {
+       tag "Normalization"
+
+       input:
+       file vcf_in from vcf_file
+       file fasta_ref from ref_file
+
+       output:
+       file("normalized.vcf") into (normalized_vcf,normalized_vcf_2)
+
+       script:
+        """
+        bgzip $vcf_in
+        tabix $vcf_in".gz"
+        bcftools norm  -m - --threads $task.cpus --fasta $fasta_ref -o normalized.vcf  $vcf_in".gz"
+        """
+       }
+
+
 }
+
+
 
 process GATK_get_annotations {
   tag "Define annotations"
