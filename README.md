@@ -17,7 +17,7 @@ The classification is done with a Random Forest model [https://sandbox.zenodo.or
 ### Requirements:
 SmartRNASeqCaller expects the user to have a processed reference fasta file as required by GATK guidelines, meaning having a .fai and .dict files before starting the process.
 
-It also requires a set od bed files (provdied under resources/hg19) with:
+It also requires a set od bed files (provided under resources/hg19) with:
  - Repmask from UCSC regions
  - Regions containing the first 4bp of each of intron ends 
  - RNAEdit positions
@@ -33,13 +33,14 @@ For local execution there are a set of tools which are required for a proper exe
 
 ### Docker: 
 You can build a Docker with all necessary components (except fasta file of genome) with the Dockerfile in the Docker folder.
-Fruther on you can test on an example using the examples scripts with nextflow execution with Docker straight away.
+Further on you can test on an example using the examples scripts with nextflow execution with Docker straight away.
 To build the docker image needed for SmartRNASeqCaller, go to Docker folder and generate the image by running:
-  << docker build -t smartrnaseqcaller:latest ./  >>
-This will build a Docker image named smartrnaseqcaller:latest, which can then be used in comination with nextflow '-with-docker' paramaeter
+`docker build -t smartrnaseqcaller:latest ./ `
+This will build a Docker image named `smartrnaseqcaller:latest`, which can then be used in combination with nextflow '-with-docker' parameter.
+You also need GATK 3.6.0 Docker. This can be obtained running : `docker pull broadinstitute/gatk3:3.6-0 `
 
 ### Local execution:
-The SmartRNASeq.sh file contains a sample pipeline with few parameters to set at the beginnign of hte script.
+The SmartRNASeq.sh file contains a sample pipeline with few parameters to set at the beginning of the script.
 
 ### Nextflow executions:  
 For running with [Nextflow](https://www.nextflow.io/), we require also to have nextflow up and running. This will enable the execution with Docker containers [see [examples](https://github.com/inab/SmartRNASeqCaller/blob/master/Nextflow/exec_line.sh)  in Nextflow folder]
