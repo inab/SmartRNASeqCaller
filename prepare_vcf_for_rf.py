@@ -8,7 +8,7 @@ import subprocess
 import pandas as pd
 
 parser = argparse.ArgumentParser(description = 'Parses RNA for RF later')
-parser.add_argument('--dna', type=str, dest='dna', required=False,default = 'None', help='DNA file to check if it is inside as truth')
+parser.add_argument('--dna', type=str, dest='dna', required=False,default = 'None', help='DNA file with ground truth variants to compare against [optional]')
 parser.add_argument('--vcf', type=str, dest='vcf', required=True, help='Input vcf file [required] Needs tobe bgzip and tabix if --dna argument is used')
 parser.add_argument('--outfile', type=str, dest='outfile', required=True, help='Output file with all variants in csv format. [required]')
 args = parser.parse_args()
@@ -100,7 +100,7 @@ def main(args):
     
     with  open(args.vcf) if args.vcf.endswith('vcf') else gzip.open(args.vcf) as rd,open(args.outfile,'w') as wr:
         if args.vcf.endswith('vcf') and args.dna !='None':
-            print 'Please bgzip and tabix your rna variant file or it will not work. Exiting'
+            print 'Please bgzip and tabix your RNA variant file if you want to compare with a DNA ground truth. Exiting'
             raise
         for line in rd:
             if line.startswith('##'):
@@ -130,7 +130,7 @@ def main(args):
                 ID_ = ':'.join([ff[0],ff[1],ff[3],ff[4]])
                 
                 if len(ff[3].split(','))>1:
-                    print 'Skipping %s because multiallelic'%(ID_)
+                    print 'Skipping %s because it is multiallelic.'%(ID_)
                     continue
                 ######################################################3
                 #info field parsing
@@ -143,7 +143,7 @@ def main(args):
                 ######################################################3
                 out_list = parse_gt_field(ff[9],ff[8])
                 if out_list =='skip':
-                    print 'Skipping %s because gt problems'%(ID_)
+                    print 'Skipping %s because of genotype parsing problems.'%(ID_)
                     print ff[9]
                     continue
                 else :

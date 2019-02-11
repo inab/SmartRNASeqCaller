@@ -11,12 +11,12 @@ import pandas as pd
 parser = argparse.ArgumentParser(description = 'filter SNPs according to their family distribution')
 parser.add_argument('--bam', type=str, dest='bam', required=True, help='Input bam file [required]')
 parser.add_argument('--vcf', type=str, dest='vcf', required=True, help='Input vcf file [required]')
-parser.add_argument('--outfile', type=str, dest='outfile', required=True, help='Output file wit all variants. [required]')
-parser.add_argument('--ref', type=str, dest='ref', required=True, help='Input ref fasta file')
+parser.add_argument('--outfile', type=str, dest='outfile', required=True, help='Output file with all variants. [required]')
+parser.add_argument('--ref', type=str, dest='ref', required=True, help='Input reference fasta file')
 
-parser.add_argument('--repmask', type=str, dest='repmask', required=True, help='Input rep masker bed file')
-parser.add_argument('--intron', type=str, dest='intron', required=True, help='Input 4bp intronic region bed file')
-parser.add_argument('--rnaedit', type=str, dest='rnaedit', required=True, help='Input  common RNA edit bed file')
+parser.add_argument('--repmask', type=str, dest='repmask', required=True, help='Input bed file with rep mask regions.')
+parser.add_argument('--intron', type=str, dest='intron', required=True, help='Input bed file with the first 4bp of intronic regions defined.')
+parser.add_argument('--rnaedit', type=str, dest='rnaedit', required=True, help='Input  bed file with RNA Edit sites.')
 
 
 args = parser.parse_args()
@@ -72,7 +72,7 @@ def  step4_homopolymer(fasta,sites,outf,outf_context):
     offset = 4
     site_dict = dict()
     #step 1 generate bed file with
-    print 'generate dictionary of sites and bed file'
+    print 'Generate dictionary of sites and bed file'
     with open(outf+'tmp.bed','w')  as wr:
         for chr_,pos,ref,alt in sites:
             if alt=='<NON_REF>' : continue
@@ -80,7 +80,7 @@ def  step4_homopolymer(fasta,sites,outf,outf_context):
             wr.write('\t'.join([chr_,str(int(pos)-1 -offset),  str(int(pos) + offset), ':'.join([chr_,pos,ref,alt])])+'\n')
     tmpfile=outf+'tmp.fa'
     
-    print 'generate the fasta sequences of variants'
+    print 'Generate the fasta sequences of variants'
     syscall='bedtools getfasta -fi %s -bed %s -fo %s -name'%(fasta,outf+'tmp.bed',tmpfile)
     print syscall
     return_code = subprocess.call(syscall,shell =True)
@@ -90,7 +90,7 @@ def  step4_homopolymer(fasta,sites,outf,outf_context):
     seq = []
     homopol = None
     
-    print ' now scan all of them to see which ones are in homopolymer region and report variant context'
+    print 'Now scan all of them to see which ones are in homopolymer region and report variant context'
     with open(tmpfile) as rd, open(outf,'w') as wr, open(outf_context,'w') as wr_context:
         for line in rd:
             if line.startswith('>'):
@@ -167,9 +167,9 @@ def add_filter_field(infile,outfile,ID_info,context_file):
             if "1/2" in line :
                 print line
                 print infile
-                print 'ERROR ###########################'
+                print '######################ERROR ###########################'
                 print 'The VCF file input of this tool should only be composed of biallelic sites'
-                print '#################################'
+                print '#######################################################'
                 raise
             if line.startswith('##'): wr.write(line)
             elif line.startswith('#'):
@@ -203,7 +203,7 @@ def main (args):
     samfile = pysam.Samfile(args.bam, "rb")
     sites = []
     print '###############################################################'
-    print ' Step 0 generate sites from VCF for steps validation'
+    print '# Step 0: generate sites from VCF for validation'
     print '###############################################################'
     
     with  open(args.vcf) if args.vcf.endswith('vcf') else gzip.open(args.vcf) as rd:
@@ -218,7 +218,7 @@ def main (args):
     
     #run the pysam stuff
     print '###############################################################'
-    print '# Step 1 : support from first 6 bp of reads'
+    print '# Step 1: Calculating the support from first/last 6bp of reads'
     print '###############################################################'
 
     with open(args.outfile +'_step1.csv','w') as wr:
@@ -227,7 +227,7 @@ def main (args):
     
     # Step 2 : Repeat Masker overlap
     print '###############################################################'
-    print '# Step 2 : Repeat Masker overlap'
+    print '# Step 2: Repeat Masker overlap'
     print '###############################################################'
     overlap_vcf_with_bed(args.vcf,args.repmask,args.outfile+'_step2_repmask.csv')
     
