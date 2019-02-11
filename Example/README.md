@@ -11,7 +11,7 @@ Follow the instructions from this file to :
 
 - Make sure you have the needed docker images:
    - smartrnaseqcaller:latest
-   - broadinstitute/gatk3
+   - broadinstitute/gatk3:3.6-0
 
 - Make sure you have nextflow installed
 
