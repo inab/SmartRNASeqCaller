@@ -1,4 +1,4 @@
-## nput data and prefix ##
+## Input data and prefix ##
 bam: "tmp.bam"
 bai: "tmp.bai"
 vcf: "tmp.vcf"
@@ -14,9 +14,10 @@ intron_bed: "SmartRNASeqCaller/resources/intron_4bp_splice_overla.bed.gz"
 rnaedit_bed: "SmartRNASeqCaller/resources/merged_RNA_edit.bed.gz"
 model: "SmartRNASeqCaller/resources/RNA_Variant_RF_model.rds"
 
-## paths to tools
+## paths to tools [docker image paths]
 GATK: "/usr/GenomeAnalysisTK.jar"
 python:  "/opt/conda/bin/python2.7" 
-#Full Path to SmartRNASeqCaller locally
+#Full Path to SmartRNASeqCaller (in docker image: /opt/SmartRNASeqCaller or
+# Locally : your path to SmartRNASeqCaller
 pp_path: "/..../SmartRNASeqCaller"
 

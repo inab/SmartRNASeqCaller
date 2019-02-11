@@ -2,13 +2,14 @@ set -e
 ############################################################
 ##  Required resources
 ############################################################
+REPOSITORY_PATH='./' # base path of SmartRNASeqCaller
 REF='myfasta.fa'  #needs to have .fai and .dict files too
-REPMASK='resources/hg19/repmasker_hg19.bed.gz'
-SPLICE4BP='resources/hg19/intron_4bp_splice_overlap.bed.gz'
-RNAEDIT='resources/hg19/merged_RNA_edit.bed.gz'
-MODEL='resources/RNA_Variant_RF_model.rds'
-CODEFOLDER='PATH to SmartRNASeqCaller'
-GATK='path to GATK/GenomeAnalysisTK.jar'
+REPMASK=$REPOSITORY_PATH'/resources/hg19/repmasker_hg19.bed.gz'
+SPLICE4BP=$REPOSITORY_PATH'/resources/hg19/intron_4bp_splice_overlap.bed.gz'
+RNAEDIT=$REPOSITORY_PATH'/resources/hg19/merged_RNA_edit.bed.gz'
+MODEL=$REPOSITORY_PATH'/resources/RNA_Variant_RF_model.rds'
+CODEFOLDER=$REPOSITORY_PATH
+GATK='path to GATK/GenomeAnalysisTK.jar' #GATK 3.6.0!
 
 ############################################################
 ##  Your input files

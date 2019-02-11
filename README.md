@@ -33,6 +33,9 @@ For local execution there are a set of tools which are required for a proper exe
 ### Docker: 
 You can build a Docker with all necessary components (except fasta file of genome) with the Dockerfile in the Docker folder.
 Fruther on you can test on an example using the examples scripts with nextflow execution with Docker straight away.
+To build the docker image needed for SmartRNASeqCaller, go to Docker folder and generate the image by running:
+  << docker build -t smartrnaseqcaller:latest ./  >>
+This will build a Docker image named smartrnaseqcaller:latest, which can then be used in comination with nextflow '-with-docker' paramaeter
 
 ### Local execution:
 The SmartRNASeq.sh file contains a sample pipeline with few parameters to set at the beginnign of hte script.

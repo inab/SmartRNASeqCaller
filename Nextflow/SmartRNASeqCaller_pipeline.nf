@@ -6,7 +6,7 @@
 /* 
  * 
  * Authors:
- * - Mattia Bosio <mattia-.bosio85@gmail.com>
+ * - Mattia Bosio <mattia-.bosio@bsc.es>
  */ 
 
  
@@ -79,7 +79,7 @@ model_ch  = Channel.fromPath(params.model)
 if (params.vcf.endsWith("vcf.gz")){ 
     process normalize {
        tag "Normalization"
-     
+       
        input:
        file vcf_in from vcf_file
        file fasta_ref from ref_file
@@ -97,8 +97,9 @@ if (params.vcf.endsWith("vcf.gz")){
 
 }else{
 
-  process normalize {
+  process normalize_vcf {
        tag "Normalization"
+       
 
        input:
        file vcf_in from vcf_file
