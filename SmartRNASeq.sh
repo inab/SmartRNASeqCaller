@@ -8,7 +8,7 @@ REPMASK=$REPOSITORY_PATH'/resources/hg19/repmasker_hg19.bed.gz'
 SPLICE4BP=$REPOSITORY_PATH'/resources/hg19/intron_4bp_splice_overlap.bed.gz'
 RNAEDIT=$REPOSITORY_PATH'/resources/hg19/merged_RNA_edit.bed.gz'
 MODEL=$REPOSITORY_PATH'/resources/RNA_Variant_RF_model.rds'
-CODEFOLDER=$REPOSITORY_PATH
+REPOSITORY_PATH=$REPOSITORY_PATH
 GATK='path to GATK/GenomeAnalysisTK.jar' #GATK 3.6.0!
 
 ############################################################
@@ -43,9 +43,16 @@ echo 'Normalizing and splitting to biallelic sites'
 echo '-----------------------------------------------------'
 echo ' -- Check log :'$RESFOLDER/"Normalization.log"
     BNAME=$(basename $VCF)
-    
-    bgzip -c $VCF > $RESFOLDER/$BNAME".gz"
-    tabix -f $RESFOLDER/$BNAME".gz"
+    if [[ $BNAME == *".vcf.gz" ]] ;
+    then 
+      bgzip -c $VCF > $RESFOLDER/$BNAME".gz"
+      INFILE=$BNAME".gz"
+    else
+      INFILE=$BNAME
+      cp $BNAME $RESFOLDER/$BNAME
+    fi
+
+    tabix -f $RESFOLDER/$BNAME".gz"      
     
     bcftools norm  -m - \
     --fasta $REF \
@@ -57,7 +64,7 @@ echo 'Adding GATK annotation fields'
 echo '-----------------------------------------------------'
 echo ' -- Check log :'$RESFOLDER/"Annotation.log" 2>&1
 
-ANNOTATIONS=$(/home/mbosio/anaconda2/bin/python parse_header.py $RESFOLDER/$OUTPREFIX"_normalized.vcf")
+ANNOTATIONS=$(python $REPOSITORY_PATH/parse_header.py $RESFOLDER/$OUTPREFIX"_normalized.vcf")
 
 java -jar $GATK \
        -R $REF \
@@ -72,7 +79,7 @@ echo '-----------------------------------------------------'
 echo 'Post process analysis'
 echo '-----------------------------------------------------'
 echo ' -- Check log :' $RESFOLDER/"Classification.log"
-/home/mbosio/anaconda2/bin/python  $CODEFOLDER/RNA_post_analysis.py \
+python  $REPOSITORY_PATH/RNA_post_analysis.py \
  --bam $BAM \
  --vcf $RESFOLDER/$OUTPREFIX"_normalized.annotated.vcf"  \
  --outfile $RESFOLDER/$OUTPREFIX  \
@@ -85,7 +92,7 @@ echo '-----------------------------------------------------'
 echo 'Prepare input for classification'
 echo '-----------------------------------------------------'
 echo ' -- Check log : ' $RESFOLDER/"Classification.log"
- /home/mbosio/anaconda2/bin/python $CODEFOLDER/prepare_vcf_for_rf.py \
+ python $REPOSITORY_PATH/prepare_vcf_for_rf.py \
     --vcf $RESFOLDER/$OUTPREFIX"_filtered_file.vcf.gz"  \
      --outfile $RESFOLDER/$OUTPREFIX"_postprocessed.csv"  > $RESFOLDER/"Prepare_input_classification.log" 2>&1
  
@@ -93,7 +100,7 @@ echo '-----------------------------------------------------'
 echo 'Classification' 
 echo '-----------------------------------------------------'
 echo ' -- Check log : ' $RESFOLDER/"Classification.log"
-Rscript $CODEFOLDER/predict_variants.R \
+Rscript $REPOSITORY_PATH/predict_variants.R \
       $MODEL \
       $RESFOLDER/$OUTPREFIX"_postprocessed.csv"  \
       $RESFOLDER/$OUTPREFIX"_classified.tmp.csv"  > $RESFOLDER/"Classification.log" 2>&1
@@ -102,7 +109,7 @@ echo '-----------------------------------------------------'
 echo 'Final step: output vcf files generation'
 echo '-----------------------------------------------------'
 echo ' -- Check log : ' $RESFOLDER/"Output_generation.log"
-/home/mbosio/anaconda2/bin/python $CODEFOLDER/split_vcf.py \
+python $REPOSITORY_PATH/split_vcf.py \
         -c $RESFOLDER/$OUTPREFIX"_classified.tmp.csv" \
         -v $RESFOLDER/$OUTPREFIX"_filtered_file.vcf.gz" \
         -o $RESFOLDER/$OUTPREFIX  > $RESFOLDER/"Output_generation.log" 2>&1
