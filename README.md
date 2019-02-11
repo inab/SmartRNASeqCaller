@@ -8,8 +8,7 @@ It takes as input the result from a variant calling pipeline (e.g. GATK best pra
 
 SmartRNASeqCaller can be executed locally with a shell script (SmartSeqCaller.sh) by editing the variables at the header of the file. It also includes **Nextflow** implementations that can be executed locally, or using a combination of Dockers to ensure reproducibility.
 
-The classification is done with a Random Forest model [https://sandbox.zenodo.org/record/249252/files/RNA_Variant_RF_model.rds
-] using several annotations from the VCF file, plus using criteria from previous works. SmartRNASeqCaller achieves better precision-recall results thanks to the classification module, that integrates several sources of information inferring non-linear dependencies.
+The classification is done with a Random Forest model that you can download from `https://sandbox.zenodo.org/record/249252/files/RNA_Variant_RF_model.rds` using several annotations from the VCF file, plus using criteria from previous works. SmartRNASeqCaller achieves better precision-recall results thanks to the classification module, that integrates several sources of information inferring non-linear dependencies.
 
 **Suggestion**: download the Random forest module in the resource folder of this git repository so to keep everything tidy.
 
