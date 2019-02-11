@@ -101,9 +101,9 @@ echo 'Classification'
 echo '-----------------------------------------------------'
 echo ' -- Check log : ' $RESFOLDER/"Classification.log"
 Rscript $REPOSITORY_PATH/predict_variants.R \
-      $MODEL \
-      $RESFOLDER/$OUTPREFIX"_postprocessed.csv"  \
-      $RESFOLDER/$OUTPREFIX"_classified.tmp.csv"  > $RESFOLDER/"Classification.log" 2>&1
+      --model $MODEL \
+      --input $RESFOLDER/$OUTPREFIX"_postprocessed.csv"  \
+      --out $RESFOLDER/$OUTPREFIX"_classified.tmp.csv"  > $RESFOLDER/"Classification.log" 2>&1
 
 echo '-----------------------------------------------------'
 echo 'Final step: output vcf files generation'
