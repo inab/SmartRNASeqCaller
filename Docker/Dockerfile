@@ -23,7 +23,7 @@ RUN conda install bedtools=2.25.0
 RUN conda install pysam=0.13
 RUN conda install pandas=0.20.3
 RUN conda install -c conda-forge r=3.5.0
-RUN conda install -c conda-forge r-caret 
+# RUN conda install -c conda-forge/label/cf201901 r-caret  
 RUN Rscript -e 'install.packages("ranger", repos="http://cran.us.r-project.org")'
 
 WORKDIR /data/
