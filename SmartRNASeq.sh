@@ -43,7 +43,7 @@ echo 'Normalizing and splitting to biallelic sites'
 echo '-----------------------------------------------------'
 echo ' -- Check log :'$RESFOLDER/"Normalization.log"
     BNAME=$(basename $VCF)
-    if [[ $BNAME == *".vcf.gz" ]] ;
+    if [[ $BNAME == *".vcf" ]] ;
     then 
       bgzip -c $VCF > $RESFOLDER/$BNAME".gz"
       INFILE=$BNAME".gz"
@@ -52,7 +52,7 @@ echo ' -- Check log :'$RESFOLDER/"Normalization.log"
       cp $BNAME $RESFOLDER/$BNAME
     fi
 
-    tabix -f $RESFOLDER/$BNAME".gz"      
+    tabix -f $RESFOLDER/$INFILE      
     
     bcftools norm  -m - \
     --fasta $REF \
