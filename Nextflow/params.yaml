@@ -10,7 +10,7 @@ ref: "hsapiens.hs37d5.fasta"
 ref_fai: "hsapiens.hs37d5.fasta.fai"
 ref_dict: "hsapiens.hs37d5.dict"
 repmask_bed: "SmartRNASeqCaller/resources/hg19/repmasker_hg19.bed.gz"
-intron_bed: "SmartRNASeqCaller/resources/hg19/intron_4bp_splice_overla.bed.gz"
+intron_bed: "SmartRNASeqCaller/resources/hg19/intron_4bp_splice_overlap.bed.gz"
 rnaedit_bed: "SmartRNASeqCaller/resources/hg19/merged_RNA_edit.bed.gz"
 model: "SmartRNASeqCaller/resources/RNA_Variant_RF_model.rds"
 
