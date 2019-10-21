@@ -41,6 +41,7 @@ RUN Rscript -e 'install.packages("UpSetR", repos="http://cran.us.r-project.org")
 
 
 
+
 RUN rm -rf /opt/SmartRNASeqCaller/*
 RUN cd /opt; git clone https://github.com/inab/SmartRNASeqCaller.git
 RUN cd /opt/SmartRNASeqCaller/resources ; wget https://sandbox.zenodo.org/record/249252/files/RNA_Variant_RF_model.rds

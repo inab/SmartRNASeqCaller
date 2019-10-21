@@ -27,7 +27,7 @@ def parse_info_field(info_field, columns):
 def parse_gt_field(gt_field,format_field):
     out_list =[]
     
-    if gt_field.startswith('0/0') or gt_field.startswith('./.'):
+    if gt_field.startswith('0/0') or gt_field.startswith('./.') or gt_field.startswith('0|0') or gt_field.startswith('.|.'):
         #it's not a variant!
         return 'skip'
     else:
@@ -97,6 +97,11 @@ def main(args):
     print '###############################################################'
     
     info_colnames = list()
+    #add a list with skipped variants
+    skipped_list = list()
+    #add a dictionary with  the original GT for phased variants
+    # this dictionary should be saved and removed at the end
+    var_GT_phased_dict = dict()
     
     with  open(args.vcf) if args.vcf.endswith('vcf') else gzip.open(args.vcf) as rd,open(args.outfile,'w') as wr:
         if args.vcf.endswith('vcf') and args.dna !='None':
@@ -131,6 +136,7 @@ def main(args):
                 
                 if len(ff[3].split(','))>1:
                     print 'Skipping %s because it is multiallelic.'%(ID_)
+                    skipped_list.append(line)
                     continue
                 ######################################################3
                 #info field parsing
@@ -141,10 +147,33 @@ def main(args):
                 ######################################################3
                 # GT parsing:
                 ######################################################3
+                
+                #pre_check to convert phased genotypes:
+                # phasing only for 0|1 1|0 0|0 or 1|1
+                # Other more complex genotypes are not processed by this version of the tool
+                gt = ff[9].split(':')
+                if gt[0] in  ['1|0','0|1','1|1']:
+                    var_GT_phased_dict[ID_] = ff[9]
+                    if gt[0] == '1|1' :
+                        gt[0] = '1/1'
+                    else:
+                        gt[0] = '0/1'
+                    ff[9] = ':'.join(gt)
+                        
+                
+                #now that we have changed GT from phased to unphased and stored
+                #in the dict, skip all those not matchnig
+                if gt[0] not in ['0/1','1/1']:
+                    print 'Skipping %s because of genotype parsing problems ; Not a variant or not a biallelic genotype'%(ID_)
+                    print ff[9]
+                    skipped_list.append(line)
+                    continue
+                
                 out_list = parse_gt_field(ff[9],ff[8])
                 if out_list =='skip':
                     print 'Skipping %s because of genotype parsing problems.'%(ID_)
                     print ff[9]
+                    skipped_list.append(line)
                     continue
                 else :
                     field_output.extend(out_list)
@@ -163,13 +192,22 @@ def main(args):
                 
                 field_output.extend(out_list)
                 
-                # If --dna: add a column
+                # If --dna: add a column 
                 if args.dna  != 'None':
                     field_output.append('0')
                     output_dictionary[ID_] = field_output
                 else:
                     wr.write(ID_+'\t'+ '\t'.join(field_output)+ '\n')
                 
+        ###
+        # Step in which we store the skipped lines and the dictionary of 
+        ###
+        with open(args.outfile + '.skipped.vcf','w') as wr:
+            for line in skipped_list:
+                wr.write(line.strip())
+        import pickle
+        out_s = open(args.outfile + 'GT_dict.pk', 'wb')
+        pickle.dump(var_GT_phased_dict, out_s)   
         
         # now open the dna file and one by one try to find them
         if args.dna  != 'None':

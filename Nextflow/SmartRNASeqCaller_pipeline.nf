@@ -183,6 +183,7 @@ normalized_annotated_vcf.into {
 process variant_post_process{
   tag "Variant Call postprocess "
 
+  publishDir params.outdir, pattern: '*skipped.vcf', mode: 'copy'
   
   input:
     file bam_in_annotate from bam_file
@@ -198,6 +199,8 @@ process variant_post_process{
   output:
     file(params.OUTPREFIX +"_filtered_file.vcf.gz") into filtered_vcf_gz
     file("postprocessed.csv") into pp_csv_out
+    file("postprocessed.csv.skipped.vcf") into skipped_out
+    file("postprocessed.csvGT_dict.pk") into dict_gt_out
     
    
   script:
@@ -235,6 +238,8 @@ process classify_variants{
 				file vcf_file_classify from filtered_vcf_gz
 				file csv_file_pp  from pp_csv_out
 				file model_ch_file from model_ch
+    file dict_gt from dict_gt_out
+    
   output:
     file(params.OUTPREFIX + "_ok.vcf") into vcf_ok
     file(params.OUTPREFIX + "_ko.vcf") into vcf_ko
@@ -249,7 +254,8 @@ process classify_variants{
     $python $postprocess_path/split_vcf.py \
         -c classified.tmp.csv \
         -v $vcf_file_classify \
-        -o ${OUTPREFIX}
+        -o ${OUTPREFIX} \
+        --GTdict  $dict_gt
   """
    
 } 

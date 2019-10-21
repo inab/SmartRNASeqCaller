@@ -57,7 +57,7 @@ echo ' -- Check log :'$RESFOLDER/"Normalization.log"
     bcftools norm  -m - \
     --fasta $REF \
     -o $RESFOLDER/$OUTPREFIX"_normalized.vcf"  \
-    $RESFOLDER/$BNAME".gz" > $RESFOLDER/"Normalization.log" 2>&1
+    $RESFOLDER/$BNAME > $RESFOLDER/"Normalization.log" 2>&1
 
 echo '-----------------------------------------------------'
 echo 'Adding GATK annotation fields'
@@ -112,6 +112,7 @@ echo ' -- Check log : ' $RESFOLDER/"Output_generation.log"
 python $REPOSITORY_PATH/split_vcf.py \
         -c $RESFOLDER/$OUTPREFIX"_classified.tmp.csv" \
         -v $RESFOLDER/$OUTPREFIX"_filtered_file.vcf.gz" \
+	--GTdict $RESFOLDER/$OUTPREFIX"_postprocessed.csvGT_dict.pk"\
         -o $RESFOLDER/$OUTPREFIX  > $RESFOLDER/"Output_generation.log" 2>&1
 
 
@@ -126,7 +127,7 @@ echo 'Cleanup'
 echo '-----------------------------------------------------'
 
 for i in  $RESFOLDER/*
- do if [ ${i: -4} != ".log" ] && [ ${i: -7} != "_ok.vcf" ] && [ ${i: -7} != "_ko.vcf" ] 
+ do if [ ${i: -4} != ".log" ] && [ ${i: -7} != "_ok.vcf" ] && [ ${i: -7} != "_ko.vcf" ]  && [ ${i: -11} != "skipped.vcf"  ] 
   then
      rm $i
    fi
