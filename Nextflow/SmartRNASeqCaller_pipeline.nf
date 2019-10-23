@@ -199,9 +199,8 @@ process variant_post_process{
   output:
     file(params.OUTPREFIX +"_filtered_file.vcf.gz") into filtered_vcf_gz
     file("postprocessed.csv") into pp_csv_out
-    file("postprocessed.csv.skipped.vcf") into skipped_out
     file("postprocessed.csvGT_dict.pk") into dict_gt_out
-    
+    file(params.OUTPREFIX + "_skipped.vcf") into skipped_out
    
   script:
   """ 
@@ -221,6 +220,8 @@ process variant_post_process{
      --rnaedit  $bed_rnaedit
     
      $python $postprocess_path/prepare_vcf_for_rf.py --vcf ${OUTPREFIX}_filtered_file.vcf.gz --outfile postprocessed.csv
+     
+     mv   postprocessed.csv.skipped.vcf ${OUTPREFIX}"_skipped.vcf"
      
   """
    
