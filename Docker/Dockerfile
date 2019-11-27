@@ -16,7 +16,7 @@ LABEL tags="Genomics;Transcriptomics"
 # Maintainer
 MAINTAINER Mattia Bosio <mattia.bosio@bsc.es>
 
-RUN conda install bcftools=1.3.1
+RUN conda install bcftools=1.6
 RUN conda install tabix
 RUN conda install bedtools=2.25.0
 
