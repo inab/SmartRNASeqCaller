@@ -1,11 +1,16 @@
+#######################################################
 ## Input data and prefix ##
+#######################################################
+##### THESE ARE THE FILES TO SPECIFY FOR EACH SAMPLE ##
 bam: "tmp.bam"
 bai: "tmp.bai"
 vcf: "tmp.vcf"
 outdir : "results"
 OUTPREFIX: "postprocess"
 
+#######################################################
 ## Overall reference resources
+#######################################################
 ref: "hsapiens.hs37d5.fasta"
 ref_fai: "hsapiens.hs37d5.fasta.fai"
 ref_dict: "hsapiens.hs37d5.dict"

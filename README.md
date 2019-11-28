@@ -8,7 +8,7 @@ It takes as input the result from a variant calling pipeline (e.g. GATK best pra
 
 SmartRNASeqCaller can be executed locally with a shell script (SmartSeqCaller.sh) by editing the variables at the header of the file. It also includes **Nextflow** implementations that can be executed locally, or using a combination of Dockers to ensure reproducibility.
 
-The classification is done with a Random Forest model that you can download from `https://sandbox.zenodo.org/record/249252/files/RNA_Variant_RF_model.rds` using several annotations from the VCF file, plus using criteria from previous works. SmartRNASeqCaller achieves better precision-recall results thanks to the classification module, that integrates several sources of information inferring non-linear dependencies.
+The classification is done with a Random Forest model that you can download from `https://zenodo.org/record/1473507/files/RNA_Variant_RF_model.rds` using several annotations from the VCF file, plus using criteria from previous works. SmartRNASeqCaller achieves better precision-recall results thanks to the classification module, that integrates several sources of information inferring non-linear dependencies.
 
 **Suggestion**: download the Random forest module in the resource folder of this git repository so to keep everything tidy.
 
@@ -16,7 +16,7 @@ The classification is done with a Random Forest model that you can download from
 ### Requirements:
 SmartRNASeqCaller expects the user to have a processed reference fasta file as required by GATK guidelines, meaning having a .fai and .dict files before starting the process.
 
-It also requires a set od bed files (provided under resources/hg19) with:
+It also requires a set of bed files (provided under resources/hg19) with:
  - Repmask from UCSC regions
  - Regions containing the first 4bp of each of intron ends 
  - RNAEdit positions
@@ -33,8 +33,8 @@ For local execution there are a set of tools which are required for a proper exe
 ### Docker: 
 You can build a Docker with all necessary components (except fasta file of genome) with the Dockerfile in the Docker folder.
 Further on you can test on an example using the examples scripts with nextflow execution with Docker straight away.
-To build the docker image needed for SmartRNASeqCaller, go to Docker folder and generate the image by running:
-`docker build -t smartrnaseqcaller:latest ./ `
+To build the docker image needed for SmartRNASeqCaller, execute the following statement from the base folder of SmartRNASeqCaller
+'docker build -t smartrnaseqcaller:latest Docker/.' 
 This will build a Docker image named `smartrnaseqcaller:latest`, which can then be used in combination with nextflow '-with-docker' parameter.
 You also need GATK 3.6.0 Docker. This can be obtained running : `docker pull broadinstitute/gatk3:3.6-0 `
 
