@@ -19,10 +19,14 @@ case "$SCRIPTDIR" in
 		;;
 esac
 
-conda install --file "${SCRIPTDIR}"/bioconda_spec-file.txt
-conda install -c conda-forge --file "${SCRIPTDIR}"/conda-forge_spec-file.txt
-cp "${SCRIPTDIR}" "${DESTDIR}"
+# In case we are starting from miniconda image
+for chan in defaults bioconda conda-forge ; do
+	( conda config --show channels | grep -qF "$chan" ) || conda config --add channels "$chan"
+done	
 
+conda install -y --file "${SCRIPTDIR}"/bioconda_spec-file.txt
+conda install -y -c conda-forge --file "${SCRIPTDIR}"/conda-forge_spec-file.txt
+conda clean -y -i -t
 # conda-forge 'r-ranger'
 # Rscript -e 'install.packages("ranger", repos="http://cran.us.r-project.org")'
 

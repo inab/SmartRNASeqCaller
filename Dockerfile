@@ -1,16 +1,17 @@
 #Base image load
-FROM biocontainers/biocontainers:latest
+FROM continuumio/miniconda2:4.7.12
+# FROM biocontainers/biocontainers:latest
 
 # Metadata
-LABEL base.image="biocontainers:latest" \
-	version="1" \
+LABEL base.image="continuumio/miniconda2:4.7.12" \
+	version="2" \
 	software="SmartRNASeqCaller" \
-	software.version="0.1" \
+	software.version="0.2" \
 	description="SmartRNASeqCaller allows refining VCF calls for germline variants from RNASeq data" \
 	description="This image comes with all required packages to run the tools in the github repo" \
-	website="" \
+	website="https://github.com/inab/SmartRNASeqCaller" \
 	documentation="" \
-	license="" \
+	license="LGPL-3" \
 	tags="Genomics;Transcriptomics"
 
 # Maintainer
@@ -18,11 +19,13 @@ MAINTAINER Mattia Bosio <mattia.bosio@bsc.es>
 MAINTAINER José María Fernández <jose.m.fernandez@bsc.es>
 
 ARG	DESTDIR=/opt/SmartRNASeqCaller/
+ARG	BUILDDIR=/tmp/build/
 
-USER root
+#USER root
 COPY docker/ /tmp/build/
-COPY SmartRNASeqCaller/ /opt/
 RUN /tmp/build/docker-build.sh "${DESTDIR}"
+COPY SmartRNASeqCaller/ ${DESTDIR}
+RUN cp -p "${BUILDDIR}"/docker-entrypoint.sh "${DESTDIR}" && mkdir -p "${DESTDIR}"/resources && rm -rf "${BUILDDIR}"
 
 
 #RUN conda install bcftools=1.6
@@ -58,6 +61,6 @@ RUN /tmp/build/docker-build.sh "${DESTDIR}"
 #RUN cd /opt/SmartRNASeqCaller; git pull
 
 
-USER biodocker
+#USER biodocker
 
 ENTRYPOINT	[ "/opt/SmartRNASeqCaller/docker-entrypoint.sh" ]

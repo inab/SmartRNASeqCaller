@@ -5,7 +5,7 @@ set -e
 REPOSITORY_PATH='./' # base path of SmartRNASeqCaller
 REF='myfasta.fa'  #needs to have .fai and .dict files too
 REPMASK=$REPOSITORY_PATH'/resources/hg19/repmasker_hg19.bed.gz'
-SPLICE4BP=$REPOSITORY_PATH'/resources/hg19/intron_4bp_splice_overlap.bed.gz'
+SPLICE4BP=$REPOSITORY_PATH'/resources/hg19/ens_intron_hg19_slice_4bp.bed.gz'
 RNAEDIT=$REPOSITORY_PATH'/resources/hg19/merged_RNA_edit.bed.gz'
 MODEL=$REPOSITORY_PATH'/resources/RNA_Variant_RF_model.rds'
 REPOSITORY_PATH=$REPOSITORY_PATH
@@ -85,7 +85,7 @@ python  $REPOSITORY_PATH/RNA_post_analysis.py \
  --outfile $RESFOLDER/$OUTPREFIX  \
  --ref $REF  \
  --repmask $REPMASK  \
- --intron $SPLICE4BP  \
+ --intron $SLICE4BP  \
  --rnaedit $RNAEDIT > $RESFOLDER/"Postprocess.log" 2>&1
 
 echo '-----------------------------------------------------'
