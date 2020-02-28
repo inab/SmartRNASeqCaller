@@ -9,7 +9,7 @@ RESDIR="${RESDIR:-/opt/SmartRNASeqCaller/resources}"
 
 MODELFILE=RNA_Variant_RF_model.rds
 MODEL_BASEURL=https://zenodo.org/record/1473507/files/
-ASSEMBLIES_BASEURL=https://raw.githubusercontent.com/inab/SmartRNASeqCaller/master/resources/
+ASSEMBLIES_BASEURL=https://raw.githubusercontent.com/inab/SmartRNASeqCaller/4c7d4344d4ef7fd3c2e79beaa2b6650774d37561/resources/
 ASSEMBLIES="hg19 hg38"
 
 if [ ! -r "${RESDIR}"/"${MODELFILE}" ] ; then
